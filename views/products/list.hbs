@@ -1,0 +1,84 @@
+<div class="container p-4">
+    <div class="alert alert-secondary" role="alert">
+        <h4>Ver {{title}}</h4>
+    </div>
+    <div class="form-group">
+        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Buscar por nombre...">
+    </div>
+    <table id="myTable" class="table table-striped table-light">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Cantidad</th>
+                <th scope="col">Precio</th>
+                <th scope="col">Modificar</th>
+                <th scope="col">Eliminar</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each products}}
+            <tr>
+                <td scope="row" id="nombre">{{Nombre}}</td>
+                <td>{{Cantidad}}</td>
+                <td>{{Precio}}</td>
+                <td><a href="/products/edit/{{ProductoId}}" class="btn btn-secondary">editar</a></td>
+                <td><a href="/products/delete/{{ProductoId}}" class="btn btn-warning cta-open" data-toggle="modal"
+                        data-target="#exampleModal{{@index}}">Eliminar</a></td>
+                <div class="modal fade" id="exampleModal{{@index}}" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Eliminar producto</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                ¿Esta seguro de eliminar el producto?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-modal">
+                                    <a href="/products/delete/{{ProductoId}}">Eliminar</a>
+                                </button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </tr>
+            {{else}}
+            <div class="col-md-4 mx-auto">
+                <div class="card card-body text-center">
+                    <p>No hay productos aún</p>
+                    <a type="button" class="btn btn-primary" href="/products/add">Agregar un producto</a>
+                </div>
+            </div>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function myFunction() {
+        // Declare variables
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>
